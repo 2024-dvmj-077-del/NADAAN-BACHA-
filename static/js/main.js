@@ -22,7 +22,6 @@
     cat?.classList.remove('cat-exit');
     clearTimeout(greetingTimer); stopMeow();
     speech.textContent = '';
-    // The cat arrives; its speech bubble appears automatically and types word by word.
     greetingTimer = setTimeout(() => {
       speech.classList.add('show');
       meow?.play().catch(() => {});
@@ -67,12 +66,10 @@
   function prepareSherVoice() {
     const audio = $('#sherVoice');
     if (!audio) return;
-    fetch('/assets/audio/sher-voice.m4a', {method:'HEAD'}).then(r => {
-      if (r.ok) { audio.src='/assets/audio/sher-voice.m4a'; audio.hidden=false; $('#voiceStatus').textContent='Voice recording ready.'; }
+    fetch('./static/audio/sher-voice.m4a', {method:'HEAD'}).then(r => {
+      if (r.ok) { audio.src='./static/audio/sher-voice.m4a'; audio.hidden=false; $('#voiceStatus').textContent='Voice recording ready.'; }
     }).catch(()=>{});
   }
-  // Optional future line-sync hook: provide timestamps in seconds after the voice recording is supplied.
-  // Example: window.SHER_LINE_TIMES = [0.0, 2.4, 4.8, 7.1, 9.3];
   const lines = [...document.querySelectorAll('.sher-card p')];
   const syncLines = () => {
     const audio = $('#sherVoice');
@@ -83,5 +80,6 @@
     lines.forEach((line,i)=>line.classList.toggle('line-active',i===active));
   };
   $('#sherVoice')?.addEventListener('timeupdate', syncLines);
-  if (window.location.pathname === '/site') { showScene('cover'); startMusic(); }
+  showScene('cover');
+  startMusic();
 })();
